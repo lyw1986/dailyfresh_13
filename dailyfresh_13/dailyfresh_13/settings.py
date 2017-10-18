@@ -92,7 +92,7 @@ DATABASES = {
     'slave': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dailyfresh_13',
-        'HOST': '192.168.104.68',
+        'HOST': '192.168.1.7',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': 'mysql',
@@ -123,3 +123,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.126.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'daily_fresh@126.com'
+EMAIL_HOST_PASSWORD = 'ITCAST123'
+EMAIL_FROM = '天天生鲜<daily_fresh@126.com>'
