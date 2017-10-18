@@ -4,6 +4,8 @@ from utils.models import BaseModel
 from django.conf import settings
 from goods.models import GoodsSKU
 
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
 # Create your models here.
 
 class User(AbstractUser, BaseModel):
@@ -11,6 +13,11 @@ class User(AbstractUser, BaseModel):
         db_table = 'df_users'
 
     # 生成激活令牌
+    def generate_active_token(self):
+        serializer = Serializer(settings.SECRET_KEY, 3600)
+        token = serializer.dumps({'confirm': self.id})
+        return token.decode()
+
 
 
 class Address(BaseModel):
