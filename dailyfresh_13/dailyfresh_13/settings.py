@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
+    'tinymce',
     'users',
     'goods',
     'orders',
@@ -92,7 +94,7 @@ DATABASES = {
     'slave': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dailyfresh_13',
-        'HOST': '192.168.1.7',
+        'HOST': '192.168.1.7', # 192.168.104.68
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': 'mysql',
@@ -106,9 +108,9 @@ AUTH_USER_MODEL = 'users.User'
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -130,3 +132,55 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = 'daily_fresh@126.com'
 EMAIL_HOST_PASSWORD = 'ITCAST123'
 EMAIL_FROM = '天天生鲜<daily_fresh@126.com>'
+
+# Cache
+# http://django-redis-chs.readthedocs.io/zh_CN/latest/#cache-backend
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+
+# Session
+# http://django-redis-chs.readthedocs.io/zh_CN/latest/#session-backend
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+
+# 登录的网址
+LOGIN_URL = '/users/login'
+
+
+# 修改django的默认文件存储方式
+DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.FastDFSStorage'
+
+# fastdfs服务器的ip地址
+FASTDFS_URL = "http://172.16.105.129:8888/"
+FASTDFS_CLIENT_CONF = os.path.join(BASE_DIR, "utils/fastdfs/client.conf")
+
+
+# tinymcy配置信息
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'width': 600,
+    'height': 400,
+}
+# haystack搜索框架的配置
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        #使用whoosh引擎
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        #索引文件路径
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+
+#当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

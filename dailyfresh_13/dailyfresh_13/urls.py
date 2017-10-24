@@ -17,8 +17,11 @@ from django.conf.urls import include, url
 from django.contrib import admin
 import users.urls
 import goods.urls
+import cart.urls
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^search/',include('haystack.urls')),
     url(r'^users/', include(users.urls, namespace='users')),
-    url(r'^/', include(goods.urls, namespace='goods')),
+    url(r'^cart/', include(cart.urls, namespace="cart")),
+    url(r'^', include(goods.urls, namespace='goods')),
 ]

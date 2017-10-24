@@ -1,0 +1,1 @@
+USER_HISTORY_NUM = 5
